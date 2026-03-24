@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ .data.Name }} - Portfolio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <div class="profile-section">
+                    <h1 class="name">{{ .data.Name }}</h1>
+                    <p class="title">{{ .data.Title }}</p>
+                    <p class="about">{{ .data.About }}</p>
+                </div>
+                <div class="contact-section">
+                    {{ if .data.Email }}
+                    <a href="mailto:{{ .data.Email }}" class="contact-link">
+                        <span>📧</span> {{ .data.Email }}
+                    </a>
+                    {{ end }}
+                    {{ if .data.GitHub }}
+                    <a href="{{ .data.GitHub }}" target="_blank" class="contact-link">
+                        <span><img style="background-color: white;" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAACXBIWXMAAAsTAAALEwEAmpwYAAABuklEQVR4nKWVyytFURSHP+8oFGKgmJG3mRJlaORRZgoDQpQ8rjKQpDuUgYgi+S+UJCKZeIyRiUcxYUChXC3tU9tq33PvPX61Ou211v7W2fvstQ/EVgrQAHQD48a6jU9igVUObALPQCSKSWwDKEsEnAWsAV8+YG2Su2rm+qoUOE8AHFF2BpREg+cDV/+AR4zdAoUangocWUmHQAg4jQN4DEyo3AN9AAbVJBl76gLmgHagCWgGOoF5oM3KCylGvxfIBB5VsJfENaoYD4ZNh2PZUwEKzDo4vyvcVs4bID1AgSzgXrG2JHCpnLK3QbWoWBc4OrXnHwWGFOtJnB/KKUlBNalYwv792rZTlhlU64ol3+RPg4ldm8ZLVBnAnWJJwxJ2HK+ZAAXCDs6CBOosx6t5fputyosDLPfOSpRrpMZL2jOOJaDKbJOM380y+xzgEeDEcUg827WTa4FPqw9k/GIlNzoKtPpcgMKq1hOmTfANKAYKzEXXAiQ5ChT5FJDj6tSy1YHyz032LiyHsqPAYx7zkPW7/DZP17HNcWzLWCy4J/kG+9bkNEdOrvUSO0BlvHBb9cCAT3wYqPAj/ABZJfCNa7ixbQAAAABJRU5ErkJggg==" alt="external-github-with-cat-logo-an-online-community-for-software-development-logo-bold-tal-revivo"></span> GitHub
+                    </a>
+                    {{ end }}
+                    {{ if .data.LinkedIn }}
+                    <a href="{{ .data.LinkedIn }}" target="_blank" class="contact-link">
+                        <span>💼</span> LinkedIn
+                    </a>
+                    {{ end }}
+                </div>
+            </div>
+
+            {{ if .data.TechnicalSkills.Details }}
+            <div class="skills-section">
+                {{ range .data.TechnicalSkills.Details }}
+                    
+                    {{ if .ProgrammingLanguages }}
+                    <div class="skill-group">
+                        <span class="skill-label">Languages</span>
+                        <div class="skill-items">
+                            {{ range .ProgrammingLanguages }}<span class="skill-tag">{{ . }}</span>{{ end }}
+                        </div>
+                    </div>
+                    {{ end }}
+
+                    {{ if .Frameworks }}
+                    <div class="skill-group">
+                        <span class="skill-label">Frameworks</span>
+                        <div class="skill-items">
+                            {{ range .Frameworks }}<span class="skill-tag">{{ . }}</span>{{ end }}
+                        </div>
+                    </div>
+                    {{ end }}
+
+                    {{ if .Databases }}
+                    <div class="skill-group">
+                        <span class="skill-label">Databases</span>
+                        <div class="skill-items">
+                            {{ range .Databases }}<span class="skill-tag">{{ . }}</span>{{ end }}
+                        </div>
+                    </div>
+                    {{ end }}
+
+                    {{ if .Others }}
+                    <div class="skill-group">
+                        <span class="skill-label">Tools & Other</span>
+                        <div class="skill-items">
+                            {{ range .Others }}<span class="skill-tag">{{ . }}</span>{{ end }}
+                        </div>
+                    </div>
+                    {{ end }}
+
+                {{ end }}
+            </div>
+            {{ end }}
+            </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Navigation Tabs -->
+            <nav class="nav-tabs" 
+                hx-on:click="if(event.target.closest('.tab-btn')) { 
+                    this.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active')); 
+                    event.target.closest('.tab-btn').classList.add('active'); 
+                }">
+                
+                <button class="tab-btn active" hx-get="/api/work-experience" hx-target="#content">
+                    Work Experience
+                </button>
+                <button class="tab-btn" hx-get="/api/education" hx-target="#content">
+                    Education
+                </button>
+            </nav>
+            <!-- Content Area -->
+            <section id="content" class="content-area">
+                <!-- Initial content loaded here -->
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>&copy; 2026 {{ .data.Name }}. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <script>
+        // Load work experience on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            htmx.ajax('GET', '/api/work-experience', '#content');
+        });
+        // Update active tab on click
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>

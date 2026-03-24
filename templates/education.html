@@ -1,0 +1,15 @@
+<!-- Education List -->
+<div class="section-list">
+    {{ range $index, $edu := .education }}
+    <div class="list-item" 
+         hx-get="/api/education/{{ $index }}" 
+         hx-target="#content"
+         hx-swap="innerHTML">
+        <div class="item-header">
+            <h3 class="item-title">{{ $edu.Degree }} in {{ $edu.Field }}</h3>
+            <p class="item-subtitle">{{ $edu.Institution }}</p>
+        </div>
+        <p class="item-subtitle">{{ $edu.Process }}</p>
+    </div>
+    {{ end }}
+</div>

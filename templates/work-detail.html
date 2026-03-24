@@ -1,0 +1,12 @@
+<!-- Work Experience Detail -->
+<div class="detail-view">
+    <button class="back-btn" hx-get="/api/work-experience" hx-target="#content">&larr; Back</button>
+    <h2>{{ .work.Position }} at {{ .work.Company }}</h2>
+    <p class="item-duration">{{ .work.Duration }}</p>
+    <p class="item-description">{{ .work.Description }}</p>
+    {{ if .work.PreviewFile }}
+    <div class="preview-section">
+        <iframe src="/preview/{{ .work.PreviewFile }}" width="100%" height="500px" frameborder="0"></iframe>
+    </div>
+    {{ end }}
+</div>

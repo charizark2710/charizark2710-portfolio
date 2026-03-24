@@ -1,0 +1,16 @@
+<!-- Work Experience List -->
+<div class="section-list">
+    {{ range $index, $work := .workExp }}
+    <div class="list-item" 
+         hx-get="/api/work-experience/{{ $index }}" 
+         hx-target="#content"
+         hx-swap="innerHTML">
+        <div class="item-header">
+            <h3 class="item-title">{{ $work.Position }}</h3>
+            <p class="item-subtitle">{{ $work.Company }}</p>
+        </div>
+        <p class="item-duration">{{ $work.Duration }}</p>
+        <p class="item-description">{{ $work.Summary }}</p>
+    </div>
+    {{ end }}
+</div>

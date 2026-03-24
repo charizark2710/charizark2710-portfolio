@@ -1,0 +1,12 @@
+<!-- Education Detail -->
+<div class="detail-view">
+    <button class="back-btn" hx-get="/api/education" hx-target="#content">&larr; Back</button>
+    <h2>{{ .education.Degree }} in {{ .education.Field }}</h2>
+    <p class="item-subtitle">{{ .education.Institution }}</p>
+    <p class="item-duration">{{ .education.Year }}</p>
+    {{ if .education.PreviewFile }}
+    <div class="preview-section">
+        <iframe src="/preview/{{ .education.PreviewFile }}" width="100%" height="500px" frameborder="0"></iframe>
+    </div>
+    {{ end }}
+</div>
