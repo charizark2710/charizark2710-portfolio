@@ -25,15 +25,6 @@ func SetupRoutes(router *gin.Engine) {
 	}
 
 	router.GET("/", func(c *gin.Context) {
-		portfolioData, err := storage.LoadCSVData()
-		if err != nil {
-			log.Printf("Error loading portfolio data: %v", err)
-			portfolioData = &model.PortfolioData{
-				Name:  "Portfolio",
-				Title: "Developer",
-			}
-		}
-
 		c.HTML(http.StatusOK, "index.html", gin.H{
 			"data": portfolioData,
 		})
@@ -46,6 +37,7 @@ func SetupRoutes(router *gin.Engine) {
 			Company  string
 			Duration string
 			Summary  template.HTML
+			GitHub   string
 		}
 
 		safeWorkExp := make([]SafeWorkExp, len(portfolioData.WorkExp.Details))
@@ -55,6 +47,7 @@ func SetupRoutes(router *gin.Engine) {
 				Company:  w.Company,
 				Duration: w.Duration,
 				Summary:  template.HTML(w.Summary),
+				GitHub:   w.GitHub,
 			}
 		}
 
@@ -87,6 +80,8 @@ func SetupRoutes(router *gin.Engine) {
 				"Company":     w.Company,
 				"Duration":    w.Duration,
 				"Description": template.HTML(w.Description),
+				"PreviewFile": w.PreviewFile,
+				"GitHub":      w.GitHub,
 			},
 		})
 	})

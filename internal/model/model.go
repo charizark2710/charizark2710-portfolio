@@ -24,6 +24,7 @@ type WorkExperienceDetail struct {
 	Summary     string
 	Description string
 	PreviewFile string
+	GitHub      string
 }
 
 type Education struct {

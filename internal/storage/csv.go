@@ -116,6 +116,7 @@ func LoadCSVData() (*model.PortfolioData, error) {
 				Summary:     safeGet(record, workIdx["Summary"]),
 				Description: safeGet(record, workIdx["Description"]),
 				PreviewFile: safeGet(record, workIdx["PreviewFile"]),
+				GitHub:      safeGet(record, workIdx["GitHub"]),
 			})
 
 		case "EDUCATION":
